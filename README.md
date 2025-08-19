@@ -1,3 +1,10 @@
+<p align="left">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./.imgs/header.jpg">
+      <img alt="SCSSleon framework" src="./.imgs/header.jpg">
+    </picture>
+</p>
+
 # FrankenPHP + WordPress 🚀
 
 Willkommen in diesem **FrankenPHP-WordPress-Boilerplate**!  
