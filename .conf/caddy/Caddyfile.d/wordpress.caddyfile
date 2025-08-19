@@ -2,8 +2,6 @@
     # Root directory of your WordPress installation
     root * /var/www/html
 
-    tls internal
-
     # Basic request throttling via timeouts
     request_body {
         max_size 10MB
