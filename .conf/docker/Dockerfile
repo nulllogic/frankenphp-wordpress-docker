@@ -1,14 +1,15 @@
 FROM dunglas/frankenphp:php8.4.11-alpine
 
 # add additional extensions here:
-RUN install-php-extensions imagick xdebug
-RUN docker-php-ext-install bcmath \
-    exif \
-    gd \
-    mysqli \
-    opcache \
-    zip \
-    pdo_mysql
+RUN apk update && apk add \
+    libpng-dev \
+    libwebp-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-webp \
 
 WORKDIR /var/www/html
 VOLUME /var/www/html
