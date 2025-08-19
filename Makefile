@@ -27,6 +27,7 @@ build: ## Build/rebuild images
 	$(COMPOSE) build
 
 clean: ## Remove containers, images, volumes and orphans – full reset
+	@echo "💥 removing docker images"
 	$(COMPOSE) down --rmi all -v --remove-orphans
 
 install-wp: ## Download and extract latest WordPress into ./wordpress
