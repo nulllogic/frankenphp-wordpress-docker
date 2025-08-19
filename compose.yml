@@ -3,7 +3,7 @@ services:
     build: .conf/docker
     restart: unless-stopped
     ports:
-      - "8090:80"
+      - "8090:443"
     volumes:
       - ./wordpress:/var/www/html
       - ./wp-content:/var/www/html/wp-content
@@ -46,4 +46,3 @@ volumes:
   db:
   caddy_data:
   caddy_config:
-
