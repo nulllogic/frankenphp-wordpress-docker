@@ -4,32 +4,37 @@ services:
     restart: unless-stopped
     ports:
       - "8090:443" # HTTPS by default ( Caddy redirect from HTTP to HTTPS by default )
-    env_file:
-      - .env
     volumes:
       - ./wordpress:/var/www/html
       - ./wp-content:/var/www/html/wp-content
       - ./test.php:/var/www/html/test.php
+      - ./adminer.php:/var/www/html/adminer.php
+      - ./.conf/wordpress/wp-config.php:/var/www/html/wp-config.php
       - ./.conf/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - ./.conf/caddy/Caddyfile.d:/etc/caddy/Caddyfile.d:ro
       - ./.conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./.conf/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - caddy_data:/data
       - caddy_config:/config
+    environment:
+      SERVER_NAME: ${SERVER_NAME:-:80}
+      DB_NAME: ${DB_NAME:-db}
+      DB_USER: ${DB_USER:-user}
+      DB_PASSWORD: ${DB_PASSWORD:-pass}
     depends_on:
-      - db
+      - database
     tty: true
 
-  db:
-    image: yobasystems/alpine-mariadb:latest
-    restart: always
+  database:
+    image: yobasystems/alpine-mariadb
+    restart: unless-stopped
     ports:
-      - ${LOCAL_DB_PORT:-3310}:3306
+      - "3306:3306"
     environment:
-      MYSQL_DATABASE: ${DB_NAME:-exampledb}
-      MYSQL_USER: ${DB_USER:-exampleuser}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-examplepass}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-examplepass}
+      MYSQL_DATABASE: ${DB_NAME:-wordpress}
+      MYSQL_USER: ${DB_USER:-user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootroot}
     volumes:
       - db:/var/lib/mysql
 

@@ -20,13 +20,13 @@
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'database_name_here' );
+define( 'DB_NAME', $_ENV['DB_NAME']);
 
 /** Database username */
-define( 'DB_USER', 'username_here' );
+define( 'DB_USER', $_ENV['DB_USER'] );
 
 /** Database password */
-define( 'DB_PASSWORD', 'password_here' );
+define( 'DB_PASSWORD', $_ENV['DB_PASSWORD'] );
 
 /** Database hostname */
 define( 'DB_HOST', 'localhost' );
@@ -89,7 +89,7 @@ define( 'WP_DEBUG', false );
 
 /* Add any custom values between this line and the "stop editing" line. */
 
-
+define( 'FS_METHOD', 'direct' );
 
 /* That's all, stop editing! Happy publishing. */
 

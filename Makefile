@@ -1,6 +1,6 @@
 # Simple helper Makefile for managing the FrankenPHP + MariaDB stack
 
-COMPOSE=docker compose -f compose.yml
+COMPOSE=docker compose -f compose.yml --env-file .env
 
 .PHONY: up start stop down restart logs build clean install-wp help
 
@@ -23,7 +23,6 @@ logs: ## Follow container logs
 	$(COMPOSE) logs -f
 
 build: ## Build/rebuild images
-	make install-wp
 	$(COMPOSE) build
 
 clean: ## Remove containers, images, volumes and orphans – full reset
@@ -37,6 +36,9 @@ install-wp: ## Download and extract latest WordPress into ./wordpress
 	@rm /tmp/wordpress.zip
 	@rm -rf ./wordpress/wp-content
 	@echo "WordPress installed in ./wordpress"
+	@echo "Downloading adminer.php"
+	@curl -L -o adminer.php https://github.com/vrana/adminer/releases/download/v5.3.0/adminer-5.3.0.php
+	@echo "Done ✅"
 
 help: ## Display this help
 	@echo "--HELP--"
