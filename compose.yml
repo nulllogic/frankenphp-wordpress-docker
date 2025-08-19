@@ -3,7 +3,7 @@ services:
     build: .conf/docker
     restart: unless-stopped
     ports:
-      - "8090:443" # HTTPS by default ( Caddy redirect from HTTP to HTTPS by default )
+      - "8090:80"
     volumes:
       - ./wordpress:/var/www/html
       - ./wp-content:/var/www/html/wp-content
@@ -21,6 +21,10 @@ services:
       DB_NAME: ${DB_NAME:-db}
       DB_USER: ${DB_USER:-user}
       DB_PASSWORD: ${DB_PASSWORD:-pass}
+      CADDY_GLOBAL_OPTIONS: |
+        email myemail@sample.com
+        auto_https disable_redirects
+        debug
     depends_on:
       - database
     tty: true

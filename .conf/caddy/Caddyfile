@@ -4,14 +4,8 @@
 # https://caddyserver.com/docs/caddyfile
 
 {
-	debug
-#	local_certs
-#	skip_install_trust
-#	auto_https disable_redirects # This is required to avoid redirect loops when using a reverse proxy and cloud load balancers.
-#	local_certs
-	# testing certificates
-	#acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
-
+	local_certs
+	auto_https disable_redirects # This is required to avoid redirect loops when using a reverse proxy and cloud load balancers.
 	{$CADDY_GLOBAL_OPTIONS}
 
 	frankenphp {
