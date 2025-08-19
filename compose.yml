@@ -3,7 +3,7 @@ services:
     build: .conf/docker
     restart: unless-stopped
     ports:
-      - "8090:443"    # HTTPS by default ( Caddy redirect from HTTP to HTTPS by default )
+      - "8090:443" # HTTPS by default ( Caddy redirect from HTTP to HTTPS by default )
     env_file:
       - .env
     volumes:
@@ -12,6 +12,8 @@ services:
       - ./test.php:/var/www/html/test.php
       - ./.conf/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - ./.conf/caddy/Caddyfile.d:/etc/caddy/Caddyfile.d:ro
+      - ./.conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./.conf/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
@@ -35,3 +37,4 @@ volumes:
   db:
   caddy_data:
   caddy_config:
+

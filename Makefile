@@ -4,31 +4,32 @@ COMPOSE=docker compose -f compose.yml
 
 .PHONY: up start stop down restart logs build clean install-wp help
 
-up:                ## Build (if needed) and start the stack in detached mode
+up: ## Build (if needed) and start the stack in detached mode
 	$(COMPOSE) up -d
 
-start:             ## Start existing containers
+start: ## Start existing containers
 	$(COMPOSE) start
 
-stop:              ## Stop running containers without removing them
+stop: ## Stop running containers without removing them
 	$(COMPOSE) stop
 
-down:              ## Stop and remove containers, but keep volumes/images
+down: ## Stop and remove containers, but keep volumes/images
 	$(COMPOSE) down
 
-restart:           ## Restart containers
+restart: ## Restart containers
 	$(COMPOSE) restart
 
-logs:              ## Follow container logs
+logs: ## Follow container logs
 	$(COMPOSE) logs -f
 
-build:             ## Build/rebuild images
+build: ## Build/rebuild images
+	make install-wp
 	$(COMPOSE) build
 
-clean:             ## Remove containers, images, volumes and orphans – full reset
+clean: ## Remove containers, images, volumes and orphans – full reset
 	$(COMPOSE) down --rmi all -v --remove-orphans
 
-install-wp:        ## Download and extract latest WordPress into ./wordpress
+install-wp: ## Download and extract latest WordPress into ./wordpress
 	@echo "Downloading WordPress ..."
 	@curl -L -o /tmp/wordpress.zip https://wordpress.org/latest.zip
 	@unzip -q /tmp/wordpress.zip
@@ -36,7 +37,7 @@ install-wp:        ## Download and extract latest WordPress into ./wordpress
 	@rm -rf ./wordpress/wp-content
 	@echo "WordPress installed in ./wordpress"
 
-help:              ## Display this help
+help: ## Display this help
 	@echo "--HELP--"
 	@grep -E '^[a-zA-Z_-]+:\s+##' Makefile | awk 'BEGIN {FS = ":"}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$3}'
 	@echo "--END--"
