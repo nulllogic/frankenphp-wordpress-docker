@@ -171,6 +171,3 @@ make clean   # removes EVERYTHING (Containers, Images, Volumes)
 See [`LICENSE`](LICENSE).
 
 Have fun 🎉
-```
-
-This is the translated content in English, formatted as MDX. You can copy this into a `.mdx` file.
