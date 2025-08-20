@@ -7,99 +7,99 @@
 
 # FrankenPHP + WordPress 🚀
 
-Willkommen in diesem **FrankenPHP-WordPress-Boilerplate**!  
-Mit nur wenigen Befehlen bekommst du eine lauffähige WordPress-Instanz auf Basis von [FrankenPHP](https://frankenphp.dev/), MariaDB, Dragonfly (Redis-kompatibel) und phpMyAdmin – komplett in Docker 🛳️.
+Welcome to this FrankenPHP-WordPress-Docker!
+With just a few commands, you'll get a fully functional WordPress instance based on FrankenPHP, MariaDB – completely in Docker 🛳️.
 
 ---
 
-## 📋 Voraussetzungen
+## 📋 Prerequisites
 
 * [Docker](https://docs.docker.com/get-docker/) ≥ 20.10
-* [Docker Compose](https://docs.docker.com/compose/) (ab Docker v20.10 ist `docker compose` bereits integriert)
-* `make` – unter macOS & Linux vorinstalliert, unter Windows z. B. über [Git for Windows](https://gitforwindows.org/) oder WSL.
+* [Docker Compose](https://docs.docker.com/compose/) (included by default in Docker v20.10+)
+* `make` – pre-installed on macOS & Linux, on Windows available via [Git for Windows](https://gitforwindows.org/) or WSL.
 
 ---
 
 ## 🏗️ Installation
 
 ```bash
-# 1) Repository klonen (falls noch nicht geschehen)
+# 1) Clone the repository (if not already done)
 git clone <repo-url> frankenphp-wordpress
 cd frankenphp-wordpress
 
-# 2) Eigene Umgebungs­variablen festlegen
-cmp .env.example .env  # Werte im Editor anpassen
+# 2) Set your own environment variables
+cmp .env.example .env  # Adjust values in your editor
 
-# 3) WordPress herunterladen (legt ./wordpress an)
+# 3) Download WordPress (creates ./wordpress)
 make install-wp
 
-# 4) docker-compose für die gewünschte Umgebung generieren
+# 4) Generate docker-compose for the desired environment
 make init-dev   # Development
-#   oder
+#   or
 make init-prod  # Production
 
-# 5) Stack starten (FrankenPHP, MariaDB, Dragonfly, phpMyAdmin)
+# 5) Start the stack (FrankenPHP, MariaDB, Dragonfly, phpMyAdmin)
 make up
 ```
 
-Wenige Sekunden später erreichst du:
+Within seconds, you can access:
 
 * 🔗 **WordPress**: [`http://localhost:8080`](http://localhost:8080)
 * 🔗 **phpMyAdmin**: [`http://localhost:8081`](http://localhost:8081)
-    * Anmeldedaten: die Werte aus `.env` (`MYSQL_USER` & `MYSQL_PASSWORD`)
+    * Login credentials: the values from `.env` (`MYSQL_USER` & `MYSQL_PASSWORD`)
 
-> 💡 Der Standard-Admin-Benutzer von WordPress wird wie gewohnt beim Einrichtungs­assistenten angelegt.
+> 💡 The standard WordPress admin user will be created as usual during the setup wizard.
 
 ---
 
-## ⚙️ Makefile-Befehle
+## ⚙️ Makefile Commands
 
-| Befehl                | Beschreibung |
+| Command               | Description |
 |-----------------------|--------------|
-| `make init-dev`       | Kopiert `docker-compose.dev.yml` → `docker-compose.yml` |
-| `make init-prod`      | Kopiert `docker-compose.prod.yml` → `docker-compose.yml` |
-| `make up`             | Container bauen (falls nötig) & im Hintergrund starten |
-| `make start`          | Gestoppte Container starten |
-| `make stop`           | Container anhalten, **ohne** sie zu löschen |
-| `make down`           | Container anhalten & löschen (Volumes bleiben) |
-| `make restart`        | Container neu starten |
-| `make logs`           | Live-Logs aller Container folgen |
-| `make build`          | Images neu bauen |
-| `make clean`          | Voller Reset: Container, Images, Volumes & Orphans löschen |
-| `make install-wp`     | Aktuelle WordPress-Quelle laden & nach `./wordpress` entpacken |
-| `make fix-perms`      | Setzt Besitzer von `./wordpress` auf UID 33 (www-data) |
-| `make set-fs-direct`  | Fügt `define('FS_METHOD','direct')` in `wp-config.php` ein |
-| `make help`           | Übersicht aller Targets |
+| `make init-dev`       | Copies `docker-compose.dev.yml` → `docker-compose.yml` |
+| `make init-prod`      | Copies `docker-compose.prod.yml` → `docker-compose.yml` |
+| `make up`             | Build containers (if needed) & start them in the background |
+| `make start`          | Start stopped containers |
+| `make stop`           | Stop containers **without** deleting them |
+| `make down`           | Stop and remove containers (Volumes remain) |
+| `make restart`        | Restart containers |
+| `make logs`           | Follow live logs from all containers |
+| `make build`          | Rebuild images |
+| `make clean`          | Full reset: Remove containers, images, volumes & orphans |
+| `make install-wp`     | Download latest WordPress source & extract to `./wordpress` |
+| `make fix-perms`      | Set owner of `./wordpress` to UID 33 (www-data) |
+| `make set-fs-direct`  | Add `define('FS_METHOD','direct')` to `wp-config.php` |
+| `make help`           | Overview of all targets |
 
 ---
 
-## 🧩 Docker-Services
+## 🧩 Docker Services
 
-| Service      | Zweck | Port |
+| Service      | Purpose | Port |
 |--------------|-------|------|
-| **frankenphp** | PHP 8.4 Runtime + Webserver (Basis: `dunglas/frankenphp:php8.4`) | Prod: 80 → 80, 443 → 443, Dev: 8080 → 80, 8443 → 443 |
-| **db**         | MariaDB 11 mit persistenter Volume-Ablage (`db_data`) | 3306 |
-| **dragonfly**  | Dragonfly Redis-kompatibel für WordPress Object Caching | Dev: 6379 → 6379 |
-| **phpmyadmin** | GUI-Verwaltung für MariaDB | 8081 → 80 |
+| **frankenphp** | PHP 8.4 Runtime + Webserver (Base: `dunglas/frankenphp:php8.4`) | Prod: 80 → 80, 443 → 443, Dev: 8080 → 80, 8443 → 443 |
+| **db**         | MariaDB 11 with persistent volume storage (`db_data`) | 3306 |
+| **dragonfly**  | Dragonfly Redis-compatible for WordPress Object Caching | Dev: 6379 → 6379 |
+| **phpmyadmin** | GUI management for MariaDB | 8081 → 80 |
 
 ---
 
-## 🌐 Eigene Domain & Caddyfile
+## 🌐 Custom Domain & Caddyfile
 
-1. **Site-Datei anlegen**  
-   `caddy/site.caddyfile` (Endung `.caddyfile` ist wichtig)
+1. **Create site file**  
+   `caddy/site.caddyfile` (extension `.caddyfile` is important)
    ```caddyfile
    {$SERVER_NAME} {
-       root * /app/public    # WordPress Root im Container
+       root * /app/public    # WordPress Root in the container
        encode zstd br gzip
        php_server            # FrankenPHP Shortcut
        file_server
    }
    ```
-   `{$SERVER_NAME}` wird automatisch durch den Wert aus `.env` ersetzt.
+   `{$SERVER_NAME}` is automatically replaced by the value from `.env`.
 
-2. **Compose-Mount aktivieren**  
-   In `docker-compose.yml` beim Service `frankenphp`:
+2. **Enable Compose mount**  
+   In `docker-compose.yml` for the `frankenphp` service:
    ```yaml
    volumes:
       - ./wordpress:/app/public
@@ -110,64 +110,67 @@ Wenige Sekunden später erreichst du:
       - caddy_config:/config
    ```
 
-3. **Stack neu bauen & starten**
+3. **Rebuild & start the stack**
    ```bash
    make build
    make up
    ```
 
-Caddy holt sich bei öffentlicher Domain automatisch TLS-Zertifikate. Für lokale Hosts bleibt es bei HTTP.
+Caddy automatically fetches TLS certificates for public domains. For local hosts, it remains HTTP.
 
 ---
 
-## 🔑 Umgebungsvariablen
+## 🔑 Environment Variables
 
-Alle Variablen werden in `.env` gepflegt und im `docker-compose.yml` genutzt:
+All variables are managed in `.env` and used in `docker-compose.yml`:
 
-| Variable            | Default            | Beschreibung                                                 |
+| Variable            | Default            | Description                                                 |
 |---------------------|--------------------|--------------------------------------------------------------|
-| `SERVER_NAME`       | `localhost`        | Öffentliche Domain/Host deiner WP-Site (FrankenPHP-Variable) |
-| `MYSQL_DATABASE`    | `franken`          | Name der Datenbank                                           |
-| `MYSQL_USER`        | `frankenuser`      | DB-User                                                      |
-| `MYSQL_PASSWORD`    | `frankenpass`      | DB-Passwort                                                  |
-| `MYSQL_ROOT_PASSWORD` | `rootpass`       | Root-Passwort (nur intern)                                   |
-| `REDIS_HOST`        | `dragonfly`        | Redis-Server Hostname                                        |
-| `REDIS_PORT`        | `6379`             | Redis-Server Port                                            |
-| `DRAGONFLY_MAX_MEMORY` | `512mb`             | Redis/Dragonfly max memory                                   |
+| `SERVER_NAME`       | `localhost`        | Public domain/host of your WP site (FrankenPHP variable)    |
+| `MYSQL_DATABASE`    | `franken`          | Database name                                               |
+| `MYSQL_USER`        | `frankenuser`      | DB user                                                     |
+| `MYSQL_PASSWORD`    | `frankenpass`      | DB password                                                 |
+| `MYSQL_ROOT_PASSWORD` | `rootpass`       | Root password (internal only)                               |
+| `REDIS_HOST`        | `dragonfly`        | Redis server hostname                                       |
+| `REDIS_PORT`        | `6379`             | Redis server port                                           |
+| `DRAGONFLY_MAX_MEMORY` | `512mb`             | Redis/Dragonfly max memory                                  |
 
-> 🔒 **Sicherheit:** `.env` ist in `.gitignore` gelistet. Teile echte Zugangsdaten nie in öffentlichen Repos!
+> 🔒 **Security:** `.env` is listed in `.gitignore`. Never share real credentials in public repos!
 
 ---
 
 ## 🚀 Redis Object Caching
 
-Das Setup inkludiert einen **Dragonfly** Container, der Redis-kompatibel ist und perfekt für WordPress Object Caching funktioniert.
+The setup includes a **Dragonfly** container, which is Redis-compatible and works perfectly for WordPress Object Caching.
 
-### Empfohlene WordPress-Plugins:
-- **[Redis Object Cache](https://wordpress.org/plugins/redis-cache/)** von Till Krüss (empfohlen)
-- **[W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/)** mit Redis-Backend
+### Recommended WordPress Plugins:
+- **[Redis Object Cache](https://wordpress.org/plugins/redis-cache/)** by Till Krüss (recommended)
+- **[W3 Total Cache](https://wordpress.org/plugins/w3-total-cache/)** with Redis backend
 - **[WP Redis](https://wordpress.org/plugins/wp-redis/)**
 
 ### Installation:
-1. WordPress-Plugin über Admin-Backend installieren
-2. Plugin aktivieren
-3. Bei Redis Object Cache: auf "Enable Object Cache" klicken
-4. Die Verbindung zu `dragonfly:6379` wird automatisch erkannt
+1. Install WordPress plugin via Admin backend
+2. Activate plugin
+3. For Redis Object Cache: click "Enable Object Cache"
+4. The connection to `dragonfly:6379` is automatically detected
 
-> 💡 **Tipp:** Dragonfly ist bis zu 25x schneller als Redis bei gleichem Speicherverbrauch!
+> 💡 **Tip:** Dragonfly is up to 25x faster than Redis with the same memory usage!
 
 ---
 
-## 🧹 Aufräumen
+## 🧹 Cleanup
 
 ```bash
-make clean   # entfernt ALLES (Container, Images, Volumes)
+make clean   # removes EVERYTHING (Containers, Images, Volumes)
 ```
 
 ---
 
-## 🤝 Lizenz
+## 🤝 License
 
-Siehe [`LICENSE`](LICENSE).
+See [`LICENSE`](LICENSE).
 
-Viel Spaß 🎉
+Have fun 🎉
+```
+
+This is the translated content in English, formatted as MDX. You can copy this into a `.mdx` file.
