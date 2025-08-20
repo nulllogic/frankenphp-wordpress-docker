@@ -3,7 +3,7 @@ services:
     build: .conf/docker
     restart: unless-stopped
     ports:
-      - "8090:443"
+      - "8090:80"
     volumes:
       - ./wordpress:/var/www/html
       - ./wp-content:/var/www/html/wp-content
@@ -23,7 +23,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-pass}
       CADDY_GLOBAL_OPTIONS: |
         email myemail@sample.com
-        auto_https disable_redirects
+        http_port 80
+        auto_https off
         debug
     depends_on:
       - database

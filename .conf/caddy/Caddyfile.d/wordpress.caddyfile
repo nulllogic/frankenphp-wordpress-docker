@@ -1,4 +1,4 @@
-{$SERVER_NAME} {
+http://{$SERVER_NAME} {
     # Root directory of your WordPress installation
     root * /var/www/html
 
@@ -6,8 +6,6 @@
     request_body {
         max_size 10MB
     }
-
-    tls internal
 
     # Modern compression codecs
     encode zstd br gzip
